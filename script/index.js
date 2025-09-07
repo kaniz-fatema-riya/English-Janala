@@ -5,31 +5,57 @@ const loadLessons = () => {
 
 };
 
+const removeActive = () => {
+    const lessonButtons = document.getElementsByClassName('lesson-btn');
+    for(let btn of lessonButtons){
+        btn.classList.remove('active');
+    }
+};
+
+
 const loadLevelWord = (id) => {
     const url = `https://openapi.programming-hero.com/api/level/${id}`;
     fetch(url)
     .then(res => res.json())
-    .then(data => displayLevelWord(data.data))
+    .then(data => {
+        removeActive();
+        const clickBtn = document.getElementById(`lesson-btn-${id}`);
+        clickBtn.classList.add('active');
+        displayLevelWord(data.data)
+    })
 };
 
 const displayLevelWord = (words) => {
     const wordContainer = document.getElementById('word-container');
-    wordContainer.innerHTML = '';
+    wordContainer.innerHTML = "";
+
+    if(words.length == 0){
+        wordContainer.innerHTML = ` <div id="default-word-message" class="text-center col-span-full rounded py-10" style="display:block;">
+          <p class="font-bangla">এই Lesson এ এখনো কোন Vocabulary যুক্ত করা হয়নি।</p>
+          <p class="text-2xl font-bold font-bangla">নেক্সট Lesson এ যান</p>
+        </div>`;
+        return;
+    }
+    
     for(let word of words){
         const card = document.createElement('div');
+        
         card.innerHTML = ` 
         <div class="bg-white rounded-xl shadow-sm text-center py-10 px-5 space-y-4">
-        <h2 class="font-bold text-2xl">${word.word}</h2>
+        <h2 class="font-bold text-2xl">${word.word ? word.word : "শব্দ পাওয়া যায়নি"}</h2>
         <p class="font-semibold">Meaning/Pronounciation</p>
-        <div class="font-bangla text-2xl font-medium">"${word.meaning} / ${word.pronunciation} "</div>
+        <div class="font-bangla text-2xl font-medium">"${word.meaning ? word.meaning : "অর্থ পাওয়া যায়নি" } / ${word.pronunciation ? word.pronunciation : "pronunciation পাওয়া যায়নি"  } "</div>
         <div class="flex justify-between items-center">
-         <button class="bg-gray-100 p-2 rounded-l"><i class="fa-solid fa-circle-info"></i></button>
+         <button onclick="my_modal_5.showModal()" class="bg-gray-100 p-2 rounded-l"><i class="fa-solid fa-circle-info"></i></button>
+         
          <button class="bg-gray-100 p-2 rounded-l"><i class="fa-solid fa-volume-high "></i></button>
 
         </div>
 
       </div>`
+      
         wordContainer.appendChild(card);
+        
     }
 };
 
@@ -41,11 +67,13 @@ levelContainer.innerHTML = '';
 for(let lesson of lessons){
 // create element
 const btnDiv = document.createElement('div');
-btnDiv.innerHTML = `<button onclick= "loadLevelWord(${lesson.level_no})" class="btn btn-outline  btn-primary"><i class="fa-solid fa-book-open"></i>Lesson - ${lesson.level_no} </button>`;
+btnDiv.innerHTML = `<button id="lesson-btn-${lesson.level_no}" onclick= "loadLevelWord(${lesson.level_no})" class="btn btn-outline  btn-primary lesson-btn"><i class="fa-solid fa-book-open "></i>Lesson - ${lesson.level_no} </button>`;
 // append into container
 levelContainer.appendChild(btnDiv);
 }
 
 };
+
+
 loadLessons();
-loadLevelWord();
+
