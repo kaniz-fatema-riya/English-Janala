@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DaisyUI Modal Test</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- DaisyUI -->
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@2.51.6/dist/full.css" rel="stylesheet" type="text/css" />
+</head>
+<body class="flex items-center justify-center h-screen">
+
+  <!-- Trigger button -->
+  <label for="my_modal" class="btn btn-primary">Open Modal</label>
+
+  <!-- Modal -->
+  <input type="checkbox" id="my_modal" class="modal-toggle" />
+  <div class="modal">
+    <div class="modal-box">
+      <h3 class="font-bold text-lg">Hello!</h3>
+      <p class="py-4">This modal is working 🎉</p>
+      <div class="modal-action">
+        <label for="my_modal" class="btn">Close</label>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

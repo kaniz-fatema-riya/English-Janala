@@ -1,3 +1,4 @@
+
 const loadLessons = () => {
     fetch("https://openapi.programming-hero.com/api/levels/all")
     .then(res => res.json())
@@ -25,6 +26,21 @@ const loadLevelWord = (id) => {
     })
 };
 
+const loadWordDetail = async(id) => {
+    const url = `https://openapi.programming-hero.com/api/word/${id}`;
+    const res = await fetch(url);
+    const details = await res.json();
+    displayWordDetails(details.data);
+}
+
+const displayWordDetails = (word) => {
+    console.log(word);
+    const detailsBox = document.getElementById('details-container');
+    detailsBox.innerHTML = `<h3 class="font-bold text-lg mb-3">${word.word}</h3>`;
+    
+
+}
+
 const displayLevelWord = (words) => {
     const wordContainer = document.getElementById('word-container');
     wordContainer.innerHTML = "";
@@ -46,7 +62,7 @@ const displayLevelWord = (words) => {
         <p class="font-semibold">Meaning/Pronounciation</p>
         <div class="font-bangla text-2xl font-medium">"${word.meaning ? word.meaning : "অর্থ পাওয়া যায়নি" } / ${word.pronunciation ? word.pronunciation : "pronunciation পাওয়া যায়নি"  } "</div>
         <div class="flex justify-between items-center">
-         <button onclick="my_modal_5.showModal()" class="bg-gray-100 p-2 rounded-l"><i class="fa-solid fa-circle-info"></i></button>
+         <button onclick="loadWordDetail(${word.id})" class="bg-gray-100 p-2 rounded-l"><i class="fa-solid fa-circle-info"></i></button>
          
          <button class="bg-gray-100 p-2 rounded-l"><i class="fa-solid fa-volume-high "></i></button>
 
@@ -58,6 +74,8 @@ const displayLevelWord = (words) => {
         
     }
 };
+
+
 
 const displayLessons = (lessons) => {
 // get the container and empty
